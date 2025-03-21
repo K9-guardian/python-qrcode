@@ -345,7 +345,17 @@ def _lost_point_level3(modules, modules_count):
 
 
 def _lost_point_level4(modules, modules_count):
-    dark_count = sum(map(sum, modules))
+    def dark_sum(row):
+        sum = 0
+        for bit in row:
+            match bit:
+                case True:
+                    sum += 1
+                case (True, _):
+                    sum += 1
+        return sum
+
+    dark_count = sum(map(dark_sum, modules))
     percent = float(dark_count) / (modules_count**2)
     # Every 5% departure from 50%, rating++
     rating = int(abs(percent * 100 - 50) / 5)
